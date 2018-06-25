@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const autoprefixer = require('autoprefixer')
 const cssEasyImport = require('postcss-easy-import')
+const CompressionPlugin = require("compression-webpack-plugin");
 
 const isDevelopment = () => process.env.NODE_ENV === 'development'
 
@@ -123,7 +124,14 @@ module.exports = {
     filename: 'bundle.js'
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new CompressionPlugin({
+        asset: "[path].gz[query]",
+        algorithm: "gzip",
+        test: /\.js$/,
+        threshold: 10240,
+        minRatio: 0.8
+    }),
   ],
   devServer: {
     contentBase: '../dist',
